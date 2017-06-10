@@ -1,0 +1,28 @@
+{
+  "name": "serve-local",
+  "version": "1.0.0",
+  "description": "Minimalistic local server for static content.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/autioch/serve-local.git"
+  },
+  "keywords": [
+    "server",
+    "local",
+    "static",
+    "develop"
+  ],
+  "author": "autioch@github",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/autioch/serve-local/issues"
+  },
+  "homepage": "https://github.com/autioch/serve-local#readme",
+  "dependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-qb": "^1.0.0",
+    "node-mime": "^1.0.0",
+    "qb-log": "^1.0.1"
+  }
+}
