@@ -1,11 +1,16 @@
 {
   "name": "serve-local",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Minimalistic local server for static content.",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/autioch/serve-local.git"
+  },
+  "scripts": {
+    "lint": "eslint ./src --ext .js --quiet --fix",
+    "preversion": "npm run lint",
+    "postversion": "git push origin HEAD --follow-tags && npm publish"
   },
   "keywords": [
     "server",
