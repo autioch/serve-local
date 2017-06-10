@@ -8,9 +8,9 @@ const qbLog = require('./qbLog');
  * @param  {String} message               Error message.
  * @return {undefined}                    Nothing.
  */
-module.exports = function sendError(uri, response, code, message) {
-  qbLog.error(uri);
-  qbLog.error(message);
+module.exports = function sendNotFound(uri, response, code, message) {
+  qbLog.notFound(uri);
+  qbLog.notFound(message);
 
   response.writeHead(code, {
     'Content-Type': 'text/plain'

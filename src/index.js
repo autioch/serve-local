@@ -1,4 +1,4 @@
-const qbLog = require('qb-log');
+const qbLog = require('./qbLog');
 const createServer = require('./createServer');
 
 /**

@@ -1,8 +1,8 @@
-const mime = require('mime');
-const qbLog = require('qb-log');
-const { OK, ERROR } = require('./statuses');
-const sendError = require('./sendError');
 const fs = require('fs');
+const mime = require('mime');
+const qbLog = require('./qbLog');
+const sendError = require('./sendError');
+const { OK, ERROR } = require('./statuses');
 
 const CACHE_FOREVER = 'max-age=18000';
 
@@ -14,22 +14,22 @@ const CACHE_FOREVER = 'max-age=18000';
  * @return {undefined}                    Nothing.
  */
 module.exports = function sendFile(uri, response, filename) {
-  fs.readFile(filename, 'binary', (readError, fileContents) => {
-    if (readError) {
-      sendError(uri, response, ERROR);
+  fs.readFile(filename, 'binary', (err, fileContents) => {
+    if (err) {
+      sendError(uri, response, ERROR, err.message);
 
       return;
     }
 
-    qbLog.info(`${OK} ${uri}`);
-
-    const contentType = mime.lookup(uri);
+    const contentType = mime.lookup(filename);
 
     response.setHeader('content-type', contentType);
 
     if (contentType.includes('font')) {
       response.setHeader('cache-control', CACHE_FOREVER);
     }
+
+    qbLog.ok(uri);
 
     response.writeHead(OK);
     response.write(fileContents, 'binary');

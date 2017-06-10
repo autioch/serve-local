@@ -2,8 +2,8 @@ const http = require('http');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
-const sendError = require('./sendError');
 const sendFile = require('./sendFile');
+const sendNotFound = require('./sendNotFound');
 const { NOT_FOUND } = require('./statuses');
 
 /**
@@ -14,17 +14,19 @@ const { NOT_FOUND } = require('./statuses');
 module.exports = function createServer(documentRoot) {
   return http.createServer(function requestHandler(request, response) {
     const uri = url.parse(request.url).pathname;
-    let filename = path.join(documentRoot, 'build', uri);
+    let filename = path.join(documentRoot, uri);
 
     fs.stat(filename, (fileError, stat) => {
       if (fileError) {
-        sendError(uri, response, NOT_FOUND);
+        sendNotFound(uri, response, NOT_FOUND, fileError.message);
 
         return;
       }
 
       if (stat.isFile()) {
         sendFile(uri, response, filename);
+
+        return;
       }
 
       /* Resource must be adirectory. */
@@ -32,7 +34,7 @@ module.exports = function createServer(documentRoot) {
 
       fs.stat(filename, (indexError) => {
         if (indexError) {
-          sendError(uri, response, NOT_FOUND);
+          sendNotFound(uri, response, NOT_FOUND, indexError.message);
         } else {
           sendFile(uri, response, filename);
         }
