@@ -1,5 +1,17 @@
-const qbLog = require('./qbLog');
+const qbLog = require('qb-log');
 const createServer = require('./createServer');
+
+/* Add custom logger. */
+qbLog({
+  fatal: {
+    prefix: 'FATAL',
+    formatter: qbLog._chalk.bgRed
+  },
+  info: {
+    prefix: 'INFO',
+    formatter: qbLog._chalk.cyan
+  }
+});
 
 /**
  * Creates and sets up server instance.
@@ -13,7 +25,7 @@ module.exports = function serveLocal(documentRoot, port) {
   return new Promise((resolve, reject) => {
     server.listen(port, (err) => {
       if (err) {
-        qbLog.error(err.message);
+        qbLog.fatal(err.message);
         reject(server);
 
         return;

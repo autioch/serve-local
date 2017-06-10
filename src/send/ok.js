@@ -1,10 +1,17 @@
 const fs = require('fs');
 const mime = require('mime');
-const qbLog = require('./qbLog');
-const sendError = require('./sendError');
-const { OK, ERROR } = require('./statuses');
+const qbLog = require('qb-log');
+const sendError = require('./error');
 
-const CACHE_FOREVER = 'max-age=18000';
+const CODE = 200;
+
+/* Add custom logger. */
+qbLog({
+  ok: {
+    prefix: CODE,
+    formatter: qbLog._chalk.cyan
+  }
+});
 
 /**
  * Sends proper response for the request.
@@ -13,10 +20,10 @@ const CACHE_FOREVER = 'max-age=18000';
  * @param  {Buffer} filename              Name of the file to send.
  * @return {undefined}                    Nothing.
  */
-module.exports = function sendFile(uri, response, filename) {
+module.exports = function sendOk(uri, response, filename) {
   fs.readFile(filename, 'binary', (err, fileContents) => {
     if (err) {
-      sendError(uri, response, ERROR, err.message);
+      sendError(uri, response, err.message);
 
       return;
     }
@@ -26,12 +33,12 @@ module.exports = function sendFile(uri, response, filename) {
     response.setHeader('content-type', contentType);
 
     if (contentType.includes('font')) {
-      response.setHeader('cache-control', CACHE_FOREVER);
+      response.setHeader('cache-control', 'max-age=18000');
     }
 
     qbLog.ok(uri);
 
-    response.writeHead(OK);
+    response.writeHead(CODE);
     response.write(fileContents, 'binary');
     response.end();
   });

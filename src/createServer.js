@@ -2,12 +2,10 @@ const http = require('http');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
-const sendFile = require('./sendFile');
-const sendNotFound = require('./sendNotFound');
-const { NOT_FOUND } = require('./statuses');
+const { ok, notFound } = require('./send');
 
 /**
- * [createServer description]
+ * Create an instance of http server with prepared handler.
  * @param  {String} documentRoot Directory in which files will be looked up.
  * @return {http.Server}         Instance of the HTTP server.
  */
@@ -18,13 +16,13 @@ module.exports = function createServer(documentRoot) {
 
     fs.stat(filename, (fileError, stat) => {
       if (fileError) {
-        sendNotFound(uri, response, NOT_FOUND, fileError.message);
+        notFound(uri, response, fileError.message);
 
         return;
       }
 
       if (stat.isFile()) {
-        sendFile(uri, response, filename);
+        ok(uri, response, filename);
 
         return;
       }
@@ -34,10 +32,12 @@ module.exports = function createServer(documentRoot) {
 
       fs.stat(filename, (indexError) => {
         if (indexError) {
-          sendNotFound(uri, response, NOT_FOUND, indexError.message);
-        } else {
-          sendFile(uri, response, filename);
+          notFound(uri, response, indexError.message);
+
+          return;
         }
+
+        ok(uri, response, filename);
       });
     });
   });
