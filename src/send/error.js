@@ -4,12 +4,8 @@ const CODE = 500;
 
 /* Add custom logger. */
 qbLog({
-  error: {
+  serveError: {
     prefix: CODE,
-    formatter: qbLog._chalk.red
-  },
-  errorDetails: {
-    prefix: '',
     formatter: qbLog._chalk.red
   }
 });
@@ -22,8 +18,8 @@ qbLog({
  * @return {undefined}                    Nothing.
  */
 module.exports = function sendError(uri, response, message) {
-  qbLog.error(uri);
-  qbLog.error(message);
+  qbLog.serveError(uri);
+  qbLog.serveError(message);
 
   response.writeHead(CODE, {
     'Content-Type': 'text/plain'

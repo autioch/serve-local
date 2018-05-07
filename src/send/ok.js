@@ -7,7 +7,7 @@ const CODE = 200;
 
 /* Add custom logger. */
 qbLog({
-  ok: {
+  serveOk: {
     prefix: CODE,
     formatter: qbLog._chalk.cyan
   }
@@ -36,7 +36,7 @@ module.exports = function sendOk(uri, response, filename) {
       response.setHeader('cache-control', 'max-age=18000');
     }
 
-    qbLog.ok(uri);
+    qbLog.serveOk(uri);
 
     response.writeHead(CODE);
     response.write(fileContents, 'binary');

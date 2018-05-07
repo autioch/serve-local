@@ -3,11 +3,11 @@ const createServer = require('./createServer');
 
 /* Add custom logger. */
 qbLog({
-  fatal: {
+  serveFatal: {
     prefix: 'FATAL',
     formatter: qbLog._chalk.bgRed
   },
-  info: {
+  serveInfo: {
     prefix: 'INFO',
     formatter: qbLog._chalk.cyan
   }
@@ -25,13 +25,13 @@ module.exports = function serveLocal(documentRoot, port) {
   return new Promise((resolve, reject) => {
     server.listen(port, (err) => {
       if (err) {
-        qbLog.fatal(err.message);
+        qbLog.serveFatal(err.message);
         reject(server);
 
         return;
       }
 
-      qbLog.info(`Localhost listening on: http://localhost:${port}`);
+      qbLog.serveInfo(`Localhost listening on: http://localhost:${port}`);
       resolve(server);
     });
   });

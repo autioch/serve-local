@@ -1,6 +1,6 @@
 const http = require('http');
 const url = require('url');
-const path = require('path');
+const { join } = require('path');
 const fs = require('fs');
 const { ok, notFound } = require('./send');
 
@@ -12,7 +12,7 @@ const { ok, notFound } = require('./send');
 module.exports = function createServer(documentRoot) {
   return http.createServer(function requestHandler(request, response) {
     const uri = url.parse(request.url).pathname;
-    let filename = path.join(documentRoot, uri);
+    let filename = join(documentRoot, uri);
 
     fs.stat(filename, (fileError, stat) => {
       if (fileError) {
@@ -28,7 +28,7 @@ module.exports = function createServer(documentRoot) {
       }
 
       /* Resource must be adirectory. */
-      filename = path.join(filename, 'index.html');
+      filename = join(filename, 'index.html');
 
       fs.stat(filename, (indexError) => {
         if (indexError) {

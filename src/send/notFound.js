@@ -4,7 +4,7 @@ const CODE = 404;
 
 /* Add custom logger. */
 qbLog({
-  notFound: {
+  serveNotFound: {
     prefix: CODE,
     formatter: qbLog._chalk.yellow
   }
@@ -18,7 +18,7 @@ qbLog({
  * @return {undefined}                    Nothing.
  */
 module.exports = function sendNotFound(uri, response, message) {
-  qbLog.notFound(uri);
+  qbLog.serveNotFound(uri);
 
   response.writeHead(CODE, {
     'Content-Type': 'text/plain'
